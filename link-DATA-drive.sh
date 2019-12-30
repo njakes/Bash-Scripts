@@ -73,9 +73,9 @@ if [ ! -d /home/jakes/Games ]; then
 	ln -s /mnt/DATA/Games /home/jakes
 fi
 
-if [ ! -d /home/jakes/MEGAsync ]; then
-	ln -s /mnt/DATA/MEGAsync /home/jakes
-fi
+#if [ ! -d /home/jakes/MEGAsync ]; then
+#	ln -s /mnt/DATA/MEGAsync /home/jakes
+#fi
 
 if [ ! -d /home/jakes/Music ]; then
 	ln -s /mnt/DATA/Music /home/jakes
