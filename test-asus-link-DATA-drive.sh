@@ -1,6 +1,7 @@
 #!/bin/bash
+[ "$UID" -eq 0 ] || exec sudo bash "$0" "$@"
 set -e
-
+owner="$(whoami)"
 ## Find correct partition
 #blkid
 lsblk
@@ -26,7 +27,7 @@ if [[ $(findmnt -M /mnt/$name) ]]; then
 	echo "Already mounted"
 else
 	mount /dev/$part /mnt/$name
-	chown -R $USER: /mnt/$name
+	chown -R $owner: /mnt/$name
 fi
 echo "---------done---------"
 
@@ -73,34 +74,37 @@ if [ ! -d ~$HOME/Documents ]; then
 	ln -s /mnt/$name/Documents $HOME/
 fi
 
-if [ ! -d /home/$USER/Desktop ]; then
-	ln -s /mnt/$name/Desktop /home/$USER
+if [ ! -d /home/$owner/Desktop ]; then
+	ln -s /mnt/$name/Desktop /home/$owner
 fi
 
-if [ ! -d /home/$USER/Downloads ]; then
-	ln -s /mnt/$name/Downloads /home/$USER
+if [ ! -d /home/$owner/Downloads ]; then
+	ln -s /mnt/$name/Downloads /home/$owner
 fi
 
-if [ ! -d /home/$USER/Games ]; then
-	ln -s /mnt/$name/Games /home/$USER
+if [ ! -d /home/$owner/Games ]; then
+	ln -s /mnt/$name/Games /home/$owner
 fi
 
 #if [ ! -d ~/MEGAsync ]; then
 #	ln -s /mnt/$name/MEGAsync /home/$USER
 #fi
 
-if [ ! -d /home/$USER/Music ]; then
-	ln -s /mnt/$name/Music /home/$USER
+if [ ! -d /home/$owner/Music ]; then
+	ln -s /mnt/$name/Music /home/$owner
 fi
 
-if [ ! -d /home/$USER/Pictures ]; then
-	ln -s /mnt/$name/Pictures /home/$USER
+if [ ! -d /home/$owner/Pictures ]; then
+	ln -s /mnt/$name/Pictures /home/$owner
 fi
 
-if [ ! -d /home/$USER/Videos ]; then
-	ln -s /mnt/$name/Videos /home/$USER
+if [ ! -d /home/$owner/Videos ]; then
+	ln -s /mnt/$name/Videos /home/$owner
 fi
 
+if [ ! -d /home/$owner/git ]; then
+	ln -s /mnt/$name/git /home/$owner
+fi
 echo "---------done---------"
 ###########################################################################################################
 echo "adding DATA part UUID to fstab"
@@ -108,7 +112,7 @@ if grep -Fxq "UUID=$PART_ID /mnt/$name $fs_type defaults,noatime 0 2" /etc/fstab
 	echo "Already in fstab"
 else
 	name=DATA
-	echo "UUID=$PART_ID /mnt/$name $fs_type defaults,noatime 0 2" >> /etc/fstab
+	sudo echo "UUID=$PART_ID /mnt/$name $fs_type defaults,noatime 0 2" >> /etc/fstab
 fi
 echo "---------done---------"
 
