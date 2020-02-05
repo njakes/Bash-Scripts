@@ -3,7 +3,7 @@ set -e
 [ "$UID" -eq 0 ] || exec sudo bash "$0" "$@"
 ## Find correct partition
 #blkid
-lsblk
+lsblk -fs
 read -p "Select the partition you want to mount: " part
 PART_ID=$(blkid -o value -s UUID /dev/$part)
 fs_type=$(blkid -o value -s TYPE /dev/$part)
