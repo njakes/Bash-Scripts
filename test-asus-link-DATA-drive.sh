@@ -86,6 +86,10 @@ if [ ! -d /home/$user_name/Games ]; then
 	ln -s /mnt/$name/Games /home/$user_name
 fi
 
+if [ ! -d /home/$user_name/GameShortcuts ]; then
+	ln -s /mnt/$name/GameShortcuts /home/$user_name
+fi
+
 #if [ ! -d ~/MEGAsync ]; then
 #	ln -s /mnt/$name/MEGAsync /home/$USER
 #fi
